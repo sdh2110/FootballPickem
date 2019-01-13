@@ -1,10 +1,13 @@
 from web_browser import *
 import time
+from helper_functions import combine_by_percent
 
 
 CURRENT_YEAR = None
 CURRENT_TEAMS = None
 EARLY_GAMES = 5
+OP_STRS_SAVE_RATE = 0.7
+OP_STRS_PHASEOUT_RATE = 0.9
 
 
 def find_current_year():
@@ -46,7 +49,7 @@ def load_globals(year = None):
                       previous_teams[team_key].extra_stats.as_list()
             avg_stats = []
             for i in range(len(c_stats)):
-                avg_stats.append((c_stats[i] * current_prct) + (p_stats[i] * (1 - current_prct)))
+                avg_stats.append(combine_by_percent(c_stats[i], p_stats[i], current_prct))
             CURRENT_TEAMS[team_key] = TeamProfile()
             CURRENT_TEAMS[team_key].standard_stats = StandardPack(avg_stats[:standard_count])
             CURRENT_TEAMS[team_key].extra_stats = BonusPack(avg_stats[standard_count:])
