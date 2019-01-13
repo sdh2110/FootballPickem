@@ -62,3 +62,7 @@ def make_floats(list_of_strs):
     for string in list_of_strs:
         int_list.append(float(string))
     return int_list
+
+
+def combine_by_percent(first, second, percent_of_first):
+    return (first * percent_of_first) + (second * (1 - percent_of_first))
