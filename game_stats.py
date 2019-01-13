@@ -59,20 +59,19 @@ class GameStats:
 
     def render_game(self):
         names = [self.vis_team, self.home_team]
-        op_strs = [None, None]
-        op_strs[0] = OpponentStrengths(get_file_location(str(global_data.CURRENT_YEAR), self.vis_team))
-        op_strs[1] = OpponentStrengths(get_file_location(str(global_data.CURRENT_YEAR), self.home_team))
-
-        avg_stats = [None, None]
-        avg_stats[0] = global_data.CURRENT_TEAMS[self.vis_team].standard_stats.as_list()
-        avg_stats[1] = global_data.CURRENT_TEAMS[self.home_team].standard_stats.as_list()
-
         game_stats = [None, None]
         game_stats[0] = self.vis_stats.as_list()
         game_stats[1] = self.home_stats.as_list()
 
-        percents = [[], []]
-
         for i in range(2):
+            op_strs = OpponentStrengths(get_file_location(str(global_data.CURRENT_YEAR), names[i]))
+            avg_stats = global_data.CURRENT_TEAMS[names[i]].standard_stats.as_list()
+            percents = []
+
             for j in range(len(game_stats[i])):
-                percents[i].append(game_stats[i][j] / avg_stats[i][j])
+                percents.append(game_stats[i][j] / avg_stats[j])
+
+            op_strs.phaseout_data()
+            op_strs.update_op(names[i - 1], percents)
+            op_strs.opponents[names[i - 1]][0] = 1
+            op_strs.save_to_file()
