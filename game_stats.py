@@ -3,10 +3,8 @@ from stats_packs import *
 from helper_functions import make_floats
 from helper_functions import get_file_location
 from helper_functions import mk_list_to_percents
-from opponent_strengths import OpponentStrengths
+from opponent_strengths import *
 import global_data
-
-global_data.load_globals()
 
 
 @dataclass
@@ -75,3 +73,19 @@ class GameStats:
             op_strs.update_op(names[i - 1], percents)
             op_strs.opponents[names[i - 1]][0] = 1
             op_strs.save_to_file()
+
+
+@dataclass
+class ScheduledGame:
+    __slots__ = "vis_team", "home_team", "game_url", "has_been_played"
+    vis_team: str
+    home_team: str
+    game_url: str
+    has_been_played: bool
+
+    def __init__(self, html_code):
+        self.vis_team = html_code[6].split('htm">')[1].split('<')[0]
+        self.home_team = html_code[14].split('htm">')[1].split('<')[0]
+        self.game_url = "https://www.pro-football-reference.com/boxscores/" + \
+                        html_code[9].split("/boxscores/")[1][:16]
+        self.has_been_played = html_code[0].strip() == '<div class="game_summary expanded nohover">'
