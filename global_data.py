@@ -1,4 +1,6 @@
-from web_browser import *
+from web_browser import load_all_teams
+from team_profiles import TeamProfile
+import stats_packs
 import time
 from helper_functions import combine_by_percent
 
@@ -51,5 +53,5 @@ def load_globals(year = None):
             for i in range(len(c_stats)):
                 avg_stats.append(combine_by_percent(c_stats[i], p_stats[i], current_prct))
             CURRENT_TEAMS[team_key] = TeamProfile()
-            CURRENT_TEAMS[team_key].standard_stats = StandardPack(avg_stats[:standard_count])
-            CURRENT_TEAMS[team_key].extra_stats = BonusPack(avg_stats[standard_count:])
+            CURRENT_TEAMS[team_key].standard_stats = stats_packs.StandardPack(avg_stats[:standard_count])
+            CURRENT_TEAMS[team_key].extra_stats = stats_packs.BonusPack(avg_stats[standard_count:])
