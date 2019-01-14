@@ -1,6 +1,3 @@
-from web_browser import load_all_teams
-from team_profiles import TeamProfile
-import stats_packs
 import time
 from helper_functions import combine_by_percent
 
@@ -21,6 +18,7 @@ def find_current_year():
 
 
 def load_globals(year = None):
+    import web_browser
     global CURRENT_YEAR
     global CURRENT_TEAMS
 
@@ -29,11 +27,11 @@ def load_globals(year = None):
     else:
         CURRENT_YEAR = year
 
-    actual_current = load_all_teams(CURRENT_YEAR)
+    actual_current = web_browser.load_all_teams(CURRENT_YEAR)
     for team_key in actual_current:
         actual_current[team_key] = actual_current[team_key].mk_average_team()
 
-    previous_teams = load_all_teams(CURRENT_YEAR - 1)
+    previous_teams = web_browser.load_all_teams(CURRENT_YEAR - 1)
     for team_key in previous_teams:
         previous_teams[team_key] = previous_teams[team_key].mk_average_team()
 
@@ -52,6 +50,6 @@ def load_globals(year = None):
             avg_stats = []
             for i in range(len(c_stats)):
                 avg_stats.append(combine_by_percent(c_stats[i], p_stats[i], current_prct))
-            CURRENT_TEAMS[team_key] = TeamProfile()
-            CURRENT_TEAMS[team_key].standard_stats = stats_packs.StandardPack(avg_stats[:standard_count])
-            CURRENT_TEAMS[team_key].extra_stats = stats_packs.BonusPack(avg_stats[standard_count:])
+            CURRENT_TEAMS[team_key] = web_browser.TeamProfile()
+            CURRENT_TEAMS[team_key].standard_stats = web_browser.StandardPack(avg_stats[:standard_count])
+            CURRENT_TEAMS[team_key].extra_stats = web_browser.BonusPack(avg_stats[standard_count:])
