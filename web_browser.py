@@ -1,5 +1,5 @@
-from team_profiles import *
 from game_stats import *
+from team_profiles import *
 import urllib.request
 import time
 
@@ -39,6 +39,35 @@ def load_game_stats(game_url):
         start_idx += 1
 
     return GameStats(html_lines[54], html_lines[start_idx : start_idx + 9])
+
+
+def load_schedule(year, week):
+    schd_url = "https://www.pro-football-reference.com/years/" + str(year) + "/week_" + str(week) + ".htm"
+    schd_page = urllib.request.urlopen(schd_url)
+    html_code = schd_page.read()
+    html_lines = str(html_code).split('\\n')
+
+    schedule = []
+
+    # Find section start in html for scheduled games
+    search_idx = 550
+    while html_lines[search_idx][:45] != '            <div class="section_heading"><h2>':
+        search_idx += 1
+
+    # Search for a game in schedule
+    blank_count = 0
+    while blank_count < 5:
+        if html_lines[search_idx][:30] == '      <div class="game_summary':
+            schedule.append(ScheduledGame(html_lines[search_idx:search_idx + 21]))
+            search_idx += 20
+            blank_count = 0
+        elif html_lines[search_idx] == "":
+            blank_count += 1
+        else:
+            blank_count = 0
+        search_idx += 1
+
+    return schedule
 
 
 def flt_to_percent(float_val):
@@ -92,3 +121,12 @@ def test_load_teams_speed():
         total_time += end - start
         years += 1
     print("Read years in at", total_time / years, "seconds per year")
+
+
+def test_load_schedule(year, week):
+    schedule = load_schedule(year, week)
+    for game in schedule:
+        print(game)
+
+
+test_load_schedule(2018, 1)
