@@ -20,8 +20,8 @@ class GameStats:
         raw_data = [[], []]
         for line in html_code:
             info0 = line.split('vis_stat" >')[1]
-            info0, info1 = info0.split('</td><td class="center " data-stat="home_stat" >')
-            info1 = info1[:-10]
+            info0, info1 = info0.split('</td><td')
+            info1 = info1.split('home_stat" >')[1][:-10]
             raw_data[0].append(info0)
             raw_data[1].append(info1)
 
