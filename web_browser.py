@@ -1,4 +1,5 @@
-from game_stats import *
+from game_stats import GameStats
+from game_stats import ScheduledGame
 from team_profiles import *
 import urllib.request
 import time
@@ -34,8 +35,9 @@ def load_game_stats(game_url):
     html_lines = str(html_code).split('\\n')
 
     # Find starting line in html for team stats
-    start_idx = 1080
-    while html_lines[start_idx][:54] != '<tr ><th scope="row" class="right " data-stat="stat" >':
+    start_idx = 700
+    while len(html_lines[start_idx]) < 54 or \
+            html_lines[start_idx][:54] != '<tr ><th scope="row" class="right " data-stat="stat" >':
         start_idx += 1
 
     return GameStats(html_lines[54], html_lines[start_idx : start_idx + 9])
@@ -57,11 +59,11 @@ def load_schedule(year, week):
     # Search for a game in schedule
     blank_count = 0
     while blank_count < 5:
-        if html_lines[search_idx][:30] == '      <div class="game_summary':
+        if len(html_lines[search_idx]) >= 30 and html_lines[search_idx][:30] == '      <div class="game_summary':
             schedule.append(ScheduledGame(html_lines[search_idx:search_idx + 21]))
             search_idx += 20
             blank_count = 0
-        elif html_lines[search_idx] == "":
+        elif html_lines[search_idx].strip() == "":
             blank_count += 1
         else:
             blank_count = 0
@@ -127,6 +129,3 @@ def test_load_schedule(year, week):
     schedule = load_schedule(year, week)
     for game in schedule:
         print(game)
-
-
-test_load_schedule(2018, 1)
