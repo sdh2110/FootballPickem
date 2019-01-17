@@ -48,7 +48,7 @@ class TeamProfile:
         self.extra_stats = BonusPack(extra)
 
     def mk_average_team(self):
-        games_played = self.extra_stats.games
+        games_played = self.extra_stats.games()
         standard = self.standard_stats.as_list()
         extra = self.extra_stats.as_list()
 
