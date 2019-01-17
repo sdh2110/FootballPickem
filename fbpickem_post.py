@@ -8,6 +8,7 @@ from data_files_creator import update_runconfig
 
 def main():
     global_data.load_globals()
+    opponent_strengths.clear_backups(global_data.CURRENT_YEAR)
 
     teams_played = {}
     for team in global_data.CURRENT_TEAMS:
