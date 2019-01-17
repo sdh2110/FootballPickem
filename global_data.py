@@ -21,16 +21,14 @@ def find_current_year():
         return time_info.tm_year - 1
 
 
-def load_globals():
+def load_global_nums():
     global RUNCONFIGS
+    global CURRENT_YEAR
+    global CURRENT_WEEK
+
     for line in open("runconfig.txt"):
         line = line.strip().split("=")
         RUNCONFIGS[line[0]] = int(line[1])
-
-    import web_browser
-    global CURRENT_YEAR
-    global CURRENT_TEAMS
-    global CURRENT_WEEK
 
     if RUNCONFIGS["other season"] == 0:
         CURRENT_YEAR = find_current_year()
@@ -38,6 +36,11 @@ def load_globals():
         CURRENT_YEAR = RUNCONFIGS["other season"]
 
     CURRENT_WEEK = RUNCONFIGS["week num"]
+
+
+def load_global_teams():
+    import web_browser
+    global CURRENT_TEAMS
 
     actual_current = web_browser.load_all_teams(CURRENT_YEAR)
     for team_key in actual_current:
@@ -65,3 +68,8 @@ def load_globals():
             CURRENT_TEAMS[team_key] = web_browser.TeamProfile()
             CURRENT_TEAMS[team_key].standard_stats = web_browser.StandardPack(avg_stats[:standard_count])
             CURRENT_TEAMS[team_key].extra_stats = web_browser.BonusPack(avg_stats[standard_count:])
+
+
+def load_globals():
+    load_global_nums()
+    load_global_teams()
