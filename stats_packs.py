@@ -7,6 +7,9 @@ from dataclasses import dataclass
 #   Tot_Ply
 #   Tot_Y-P
 
+STANDARD_COUNT = 15
+BONUS_COUNT = 7
+
 @dataclass
 class StandardPack:
     __slots__ = "stats_list"
