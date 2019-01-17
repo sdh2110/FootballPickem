@@ -3,6 +3,8 @@ from stats_packs import StandardPack
 from helper_functions import make_floats
 from helper_functions import combine_by_percent
 import global_data
+from os import listdir
+from os import remove
 
 
 @dataclass
@@ -18,6 +20,9 @@ class OpponentStrengths:
             opponent_info = line.split("|")
             self.opponents[opponent_info[0]] = [float(opponent_info[1]), \
                                                 StandardPack(make_floats(opponent_info[2].split()))]
+        self.filename += ".bk"
+        self.save_to_file()
+        self.filename = filename
 
     def save_to_file(self):
         file = open(self.filename, "w")
@@ -38,3 +43,12 @@ class OpponentStrengths:
     def phaseout_data(self):
         for key in self.opponents:
             self.opponents[key][0] *= global_data.OP_STRS_PHASEOUT_RATE
+
+
+def clear_backups(year):
+    folder_path = str(year)
+    file_names = listdir(folder_path)
+
+    for file_name in file_names:
+        if file_name[-3:] == ".bk":
+            remove(folder_path + "/" + file_name)
