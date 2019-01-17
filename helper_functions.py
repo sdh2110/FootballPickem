@@ -53,8 +53,8 @@ def mk_list_to_percents(lst):
     return percents
 
 
-def get_file_location(folder_name, file_name):
-    return folder_name + "//" + file_name + ".txt"
+def get_file_location(folder_name, file_name, extention = ".data"):
+    return folder_name + "//" + file_name + extention
 
 
 def make_floats(list_of_strs):
