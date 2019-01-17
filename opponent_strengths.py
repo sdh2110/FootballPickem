@@ -29,9 +29,11 @@ class OpponentStrengths:
         file.close()
 
     def update_op(self, op_name, op_pcts):
+        old_op_pcts = self.opponents[op_name][1].as_list()
         for i in range(len(op_pcts)):
-            self.opponents[op_name][1][i] = combine_by_percent(self.opponents[op_name][1][i], op_pcts[i], \
-                                                            global_data.OP_STRS_SAVE_RATE * self.opponents[op_name][0])
+            op_pcts[i] = combine_by_percent(old_op_pcts[i], op_pcts[i], \
+                                         global_data.OP_STRS_SAVE_RATE * self.opponents[op_name][0])
+        self.opponents[op_name][1] = StandardPack(op_pcts)
 
     def phaseout_data(self):
         for key in self.opponents:
