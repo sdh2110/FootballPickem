@@ -65,7 +65,7 @@ class StandardPack:
 
 
 @dataclass
-class BonusPack:
+class ExtraOffensePack:
     __slots__ = "stats_list"
     stats_list: list
 
