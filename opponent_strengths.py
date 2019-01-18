@@ -13,16 +13,17 @@ class OpponentStrengths:
     filename: str
     opponents: dict
 
-    def __init__(self, filename):
+    def __init__(self, filename, editing = True):
         self.filename = filename
         self.opponents = {}
         for line in open(filename):
             opponent_info = line.split("|")
             self.opponents[opponent_info[0]] = [float(opponent_info[1]), \
                                                 StandardPack(make_floats(opponent_info[2].split()))]
-        self.filename += ".bk"
-        self.save_to_file()
-        self.filename = filename
+        if editing:
+            self.filename += ".bk"
+            self.save_to_file()
+            self.filename = filename
 
     def save_to_file(self):
         file = open(self.filename, "w")
