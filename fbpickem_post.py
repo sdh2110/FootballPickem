@@ -4,6 +4,7 @@ import web_browser
 import opponent_strengths
 from helper_functions import get_file_location
 from data_files_creator import update_runconfig
+from progress_bars import ProgressBar
 
 
 def main():
@@ -15,11 +16,14 @@ def main():
         teams_played[team] = False
 
     schedule = web_browser.load_schedule(global_data.CURRENT_YEAR, global_data.CURRENT_WEEK)
+    games_pbar = ProgressBar("Analyzing games", len(schedule) * 2)
     for game in schedule:
         game_stats = web_browser.load_game_stats(game.game_url)
+        games_pbar.complete_task()
         game_stats.render_game()
         teams_played[game.vis_team] = True
         teams_played[game.home_team] = True
+        games_pbar.complete_task()
 
     for team in teams_played:
         if teams_played[team] is False:
