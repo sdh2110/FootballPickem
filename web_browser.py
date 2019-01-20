@@ -4,16 +4,17 @@ from team_profiles import *
 import urllib.request
 import time
 from progress_bars import ProgressBar
+import random
 
 
 def load_all_teams(year):
     pbar = ProgressBar("Loading teams", 100)
     # Load in the html code from the stats web page
     stats_page = urllib.request.urlopen("https://www.pro-football-reference.com/years/" + str(year))
-    pbar.complete_task(60)
+    pbar.complete_task(55 + random.randint(0, 25))
     html_code = stats_page.read()
     html_lines = str(html_code).split('\\n')
-    pbar.complete_task(8)
+    pbar.complete_task(13)
 
     # Find starting line in html for team stats
     start_idx = 865
@@ -49,9 +50,9 @@ def load_game_stats(game_url):
 
 
 def load_schedule(year, week):
-    pbar = ProgressBar("Loading schedule", 2)
+    pbar = ProgressBar("Loading schedule", 100)
     schd_url = "https://www.pro-football-reference.com/years/" + str(year) + "/week_" + str(week) + ".htm"
-    pbar.complete_task()
+    pbar.complete_task(40 + random.randint(0, 20))
     schd_page = urllib.request.urlopen(schd_url)
     html_code = schd_page.read()
     html_lines = str(html_code).split('\\n')
@@ -75,7 +76,7 @@ def load_schedule(year, week):
         else:
             blank_count = 0
         search_idx += 1
-    pbar.complete_task()
+    pbar.complete_task(60)
 
     return schedule
 
