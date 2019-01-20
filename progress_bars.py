@@ -13,7 +13,7 @@ class ProgressBar:
     width: int
     completed: int
 
-    def __init__(self, title, tasks, width = STANDARD_WIDTH, completed = 0):
+    def __init__(self, title, tasks, completed = 0, width = STANDARD_WIDTH):
         self.title = '\r' + title + ": " + (MAX_TITLE_WIDTH - len(title)) * ' '
         self.width = width
         self.tasks = tasks
@@ -32,6 +32,8 @@ class ProgressBar:
 
 
     def complete_task(self, progress = 1):
-        if self.completed != self.tasks:
+        if self.completed < self.tasks:
             self.completed += progress
+            if self.completed > self.tasks:
+                self.completed = self.tasks
             self.update()
