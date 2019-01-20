@@ -71,7 +71,7 @@ class GameStats:
 
             op_strs.phaseout_data()
             op_strs.update_op(names[i - 1], percents)
-            op_strs.opponents[names[i - 1]][0] = 1
+            op_strs.opponents[names[i - 1]].decay = 1
             op_strs.save_to_file()
 
 
