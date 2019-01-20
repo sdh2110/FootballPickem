@@ -8,7 +8,7 @@ class TeamProfile:
     __slots__ = "name", "standard_stats", "extra_stats"
     name: str
     standard_stats: StandardPack
-    extra_stats: BonusPack
+    extra_stats: ExtraOffensePack
 
     def __init__(self, line = None):
         if line is None:
@@ -45,7 +45,7 @@ class TeamProfile:
         standard.append(stats[1])
 
         self.standard_stats = StandardPack(standard)
-        self.extra_stats = BonusPack(extra)
+        self.extra_stats = ExtraOffensePack(extra)
 
     def mk_average_team(self):
         games_played = self.extra_stats.games()
@@ -64,7 +64,7 @@ class TeamProfile:
         averaged_team = TeamProfile()
         averaged_team.name = self.name
         averaged_team.standard_stats = StandardPack(standard)
-        averaged_team.extra_stats = BonusPack(extra)
+        averaged_team.extra_stats = ExtraOffensePack(extra)
 
         return averaged_team
 
