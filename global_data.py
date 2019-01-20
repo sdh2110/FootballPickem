@@ -67,7 +67,7 @@ def load_global_teams():
                 avg_stats.append(combine_by_percent(c_stats[i], p_stats[i], current_prct))
             CURRENT_TEAMS[team_key] = web_browser.TeamProfile()
             CURRENT_TEAMS[team_key].standard_stats = web_browser.StandardPack(avg_stats[:standard_count])
-            CURRENT_TEAMS[team_key].extra_stats = web_browser.BonusPack(avg_stats[standard_count:])
+            CURRENT_TEAMS[team_key].extra_stats = web_browser.ExtraOffensePack(avg_stats[standard_count:])
 
 
 def load_globals():
