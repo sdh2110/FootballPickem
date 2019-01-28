@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from stats_packs import StandardPack
+from stats_packs import STANDARD_COUNT
 from helper_functions import make_floats
 from helper_functions import combine_by_percent
 import global_data
@@ -14,11 +15,12 @@ class Opponent:
     decay: float
     stat_percents: StandardPack
 
-    def __init__(self, op_line):
-        opponent_info = op_line.split("|")
-        self.name = opponent_info[0]
-        self.decay = float(opponent_info[1])
-        self.stat_percents = StandardPack(make_floats(opponent_info[2].split()))
+    def __init__(self, op_line = None):
+        if op_line is not None:
+            opponent_info = op_line.split("|")
+            self.name = opponent_info[0]
+            self.decay = float(opponent_info[1])
+            self.stat_percents = StandardPack(make_floats(opponent_info[2].split()))
 
     def get_save_str(self):
         save_str = self.name + "|" + str(self.decay) + "|"
@@ -60,6 +62,31 @@ class OpponentStrengths:
     def phaseout_data(self):
         for key in self.opponents:
             self.opponents[key].decay *= global_data.OP_STRS_PHASEOUT_RATE
+
+
+@dataclass
+class Consensus:
+    __slots__ = "profile_list"
+    profile_list: list
+
+    def add_profile(self, profile):
+        self.profile_list.append(profile)
+
+    def get_consensus(self):
+        total_weight = 0
+        total_percents = [0] * STANDARD_COUNT
+        for profile in self.profile_list:
+            total_weight += profile.decay
+            new_percents = profile.stat_percecnts.as_list()
+            for i in range(len(total_percents)):
+                total_percents[i] += new_percents[i] * profile.decay
+        for p in range(len(total_percents)):
+            total_percents[p] /= total_weight
+        consensus = Opponent()
+        consensus.name = "CONSENSUS"
+        consensus.decay = total_weight
+        consensus.stat_percents = StandardPack(total_percents)
+        return consensus
 
 
 def clear_backups(year):
