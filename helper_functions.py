@@ -1,4 +1,4 @@
-def percent_diff(lst1, lst2):
+def percent_difference(lst1, lst2):
     percent_list = []
 
     for i in range(len(lst1)):
