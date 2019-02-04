@@ -66,20 +66,28 @@ class OpponentStrengths:
 
 @dataclass
 class Consensus:
-    __slots__ = "profile_list"
+    __slots__ = "profile_list", "additional_weights"
     profile_list: list
+    additional_weights: list
 
-    def add_profile(self, profile):
+    def __init__(self):
+        profile_list = []
+        additional_weights = []
+
+    def add_profile(self, profile, additional_weight = 1):
         self.profile_list.append(profile)
+        self.additional_weights.append(additional_weight)
 
     def get_consensus(self):
         total_weight = 0
         total_percents = [0] * STANDARD_COUNT
-        for profile in self.profile_list:
-            total_weight += profile.decay
+        for i in range(len(self.profile_list)):
+            profile = self.profile_list[i]
+            profile_weight = profile.decay * self.additional_weights[i]
+            total_weight += profile_weight
             new_percents = profile.stat_percecnts.as_list()
             for i in range(len(total_percents)):
-                total_percents[i] += new_percents[i] * profile.decay
+                total_percents[i] += new_percents[i] * profile_weight
         for p in range(len(total_percents)):
             total_percents[p] /= total_weight
         consensus = Opponent()
