@@ -99,20 +99,6 @@ def test_teams():
         search = input("Enter a team's name: ")
 
 
-def test_team_compare():
-    teams = load_all_teams(2018)
-
-    name1 = input("Enter the first team's name: ")
-    name2 = input("Enter the second team's name: ")
-    while name1 != "" and name2 != "":
-        if name1 in teams and name2 in teams:
-            print("These teams' profiles match", flt_to_percent(compare_teams(teams[name1], teams[name2])))
-        else:
-            print("This team does not exist.")
-        name1 = input("Enter the first team's name: ")
-        name2 = input("Enter the second team's name: ")
-
-
 def test_load_game():
     url_address = input("Enter the url of the game: ").strip()
     while url_address != "":
