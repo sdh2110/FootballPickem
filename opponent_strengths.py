@@ -71,23 +71,28 @@ class Consensus:
     additional_weights: list
 
     def __init__(self):
-        profile_list = []
-        additional_weights = []
+        self.profile_list = []
+        self.additional_weights = []
 
     def add_profile(self, profile, additional_weight = 1):
-        self.profile_list.append(profile)
-        self.additional_weights.append(additional_weight)
+        if profile is not None:
+            self.profile_list.append(profile)
+            self.additional_weights.append(additional_weight)
 
     def get_consensus(self):
+        if len(self.profile_list) == 0:
+            return None
         total_weight = 0
         total_percents = [0] * STANDARD_COUNT
         for i in range(len(self.profile_list)):
             profile = self.profile_list[i]
             profile_weight = profile.decay * self.additional_weights[i]
             total_weight += profile_weight
-            new_percents = profile.stat_percecnts.as_list()
+            new_percents = profile.stat_percents.as_list()
             for i in range(len(total_percents)):
                 total_percents[i] += new_percents[i] * profile_weight
+        if total_weight == 0:
+            return None
         for p in range(len(total_percents)):
             total_percents[p] /= total_weight
         consensus = Opponent()
