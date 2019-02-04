@@ -67,16 +67,3 @@ class TeamProfile:
         averaged_team.extra_stats = ExtraOffensePack(extra)
 
         return averaged_team
-
-
-def compare_teams_method1(team1, team2):
-    team1_stats = team1.standard_stats.as_list() + team1.extra_stats.as_list()
-    team2_stats = team2.standard_stats.as_list() + team2.extra_stats.as_list()
-    team1_stats = team1_stats[1:]
-    team2_stats = team2_stats[1:]
-
-    return percent_diff(team1_stats, team2_stats)
-
-
-def compare_teams(team1, team2):
-    return compare_teams_method1(team1.mk_average_team(), team2.mk_average_team())
