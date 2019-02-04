@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from stats_packs import *
-from helper_functions import percent_diff
+from helper_functions import percent_difference
 
 
 @dataclass
